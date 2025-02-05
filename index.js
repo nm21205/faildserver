@@ -22,13 +22,17 @@ const port=8080;
 
 app.use(express.json());//json형식의 데이터 처리할수 있도록 설정하는 코드
 app.use(cors({
-  origin: ['http://localhost:3000', 'https://faild.vercel.app/'], //허용하는 출처 목록
+  origin: ['http://localhost:3000', 'https://faild-nm21205s-projects.vercel.app', 'https://port-0-faildserver-m5ubwnjb1dcbc5f5.sel4.cloudtype.app'],
   credentials: true
 }
 )) //브라우저 이슈 막기위한것
 app.use("/uploads", express.static("uploads"));
 
-
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.get('/products', (req, res)=>{
   models.Product.findAll()
@@ -39,6 +43,7 @@ app.get('/products', (req, res)=>{
     })
   })
   .catch((error)=>{
+    
     console.error(error)
     res.send("에러발생")
   })
